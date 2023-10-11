@@ -1,0 +1,173 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    rgb(228, 253, 255) 25%,
+    rgb(152, 179, 255) 75%
+  );
+}
+.canvas {
+  position: relative;
+}
+.shape-selection {
+  text-align: center;
+}
+.shape {
+  margin: 1rem;
+  z-index: 1;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  position: absolute;
+}
+/* polygon */
+.hexagon {
+  overflow: hidden;
+  display: inline-flex;
+  margin: 4rem 0;
+  width: 10rem;
+  height: 10rem;
+  transform: rotate(-30deg) skewX(30deg);
+  border-radius: 0.5rem;
+}
+.hexagon *,
+.hexagon *:before {
+  display: block;
+  overflow: hidden;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+}
+.hexagon-inner {
+  transform: skewX(-30deg) rotate(60deg) skewX(30deg);
+  opacity: 0.15;
+  transition: opacity 0.75s;
+}
+.hexagon:first-child .hexagon-inner:before {
+  transform: skewX(-30deg) rotate(60deg) skewX(30deg);
+  background: orange;
+  content: "";
+}
+.hexagon-inner:hover {
+  opacity: 1;
+}
+/* Circle */
+.circle {
+  height: 10rem;
+  width: 10rem;
+  background-color: #18b6ff;
+  border-radius: 50%;
+  opacity: 0.15;
+  transition: opacity 0.75s;
+}
+.circle:hover {
+  opacity: 1;
+}
+/* Trapeze*/
+.trapeze {
+  border-bottom: 4rem solid #0f9fff;
+  border-left: 2rem solid transparent;
+  border-right: 2rem solid transparent;
+  height: 0;
+  width: 10rem;
+  opacity: 0.15;
+  transition: opacity 0.75s;
+}
+.trapeze:hover {
+  opacity: 1;
+}
+/* rectangle */
+.rect-ver {
+  height: 10rem;
+  width: 5rem;
+  background-color: #06ffc9;
+  opacity: 0.15;
+  transition: opacity 0.75s;
+}
+.rect-ver:hover {
+  opacity: 1;
+}
+.rect-hor {
+  height: 5rem;
+  width: 10rem;
+  background-color: #ff4747;
+  opacity: 0.15;
+  transition: opacity 0.75s;
+}
+.rect-hor:hover {
+  opacity: 1;
+}
+
+/**specific to canva*/
+.container {
+  display: inline-flex;
+  width: 100%;
+}
+.room-config {
+  display: inline-flex;
+  width: 65%;
+  border-right: solid white;
+}
+#room-assets {
+  height: 100%;
+  width: 15%;
+}
+.settings {
+  width: 20%;
+  padding: 2rem;
+}
+.reminder {
+  padding: 1rem;
+  border: thin solid white;
+}
+.canvas.circle {
+  width: 50rem;
+  height: 50rem;
+  opacity: 1;
+  text-align: center;
+  margin: auto;
+}
+/* polygon */
+.canvas.hexagon {
+  overflow: hidden;
+  display: inline-flex;
+  margin: auto;
+  width: 50rem;
+  height: 50rem;
+  transform: rotate(-30deg) skewX(30deg);
+  border-radius: 0.5rem;
+}
+
+.canvas .hexagon-inner {
+  opacity: 1;
+}
+
+/* trapeze */
+.canvas.trapeze {
+  border-bottom: 20rem solid #0f9fff;
+  border-left: 10rem solid transparent;
+  border-right: 10rem solid transparent;
+  height: 0;
+  width: 50rem;
+  opacity: 1;
+  margin: auto;
+}
+
+/* rectangle */
+.canvas.rect-ver {
+  height: 50rem;
+  width: 25rem;
+  background-color: #06ffc9;
+  opacity: 1;
+  margin: auto;
+}
+.canvas.rect-hor {
+  height: 25rem;
+  width: 50rem;
+  background-color: #ff4747;
+  opacity: 1;
+  margin: auto;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapes Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="room-config" class="room-config">
+            <div draggable="true" id="canvas" class="canvas">
+            </div>
+            <div id="room-assets"></div>
+        </div>
+        <div class="settings">
+            <div class="reminder">
+            <dl>
+                <dt>Your setup</dt>
+                <dd>Your room match a <span id="set-room"></span>.</dd>
+                <dd>Their is <span id="set-table"></span> tables.</dd>             
+                <dd>Their is <span id="set-seat"></span> seats.</dd>
+            </dl>
+            </div>
+            <div>
+                <h3>Tables</h3>
+                <p>
+                    <label for="">x2</label>
+                    <input id="table-2" type="number" min="0" max="99" placeholder="0" />
+                </p>
+                <p>
+                    <label for="">x4</label>
+                    <input id="table-4" type="number" min="0" max="99" placeholder="0" />
+                </p>
+                <p>
+                    <label for="">x6</label>
+                    <input id="table-6" type="number" min="0" max="99" placeholder="0" />
+                </p>
+                <p>
+                    <label for="">x8</label>
+                    <input id="table-8" type="number" min="0" max="99" placeholder="0" />
+                </p>
+            </div>
+            <div>
+                <h3>Seats</h3>
+                <p>
+                    <label for="">chair</label>
+                    <input id="chair" type="number" min="0" max="99" placeholder="0"required/>
+                </p>
+                <p>
+                    <label for="">armchair</label>
+                    <input id="armchair" type="number" min="0" max="99" placeholder="0"required/>
+                </p>
+            </div>
+            <p>
+                <button class="validate-btn" id="validateBtn">Validate</button>
+            </p>
+            <script src="script.js"></script>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shapes Editor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Select shape that best matches your room</h1>
+    <div class="shape-selection">
+      <div class="shape" id="hexagon">
+        <div class="hexagon">
+          <div class="hexagon-inner"></div>
+        </div>
+      </div>
+      <div class="shape" id="circle">
+        <div class="circle"></div>
+      </div>
+      <div class="shape" id="trapeze">
+        <div class="trapeze"></div>
+      </div>
+      <div class="shape" id="rect-ver">
+        <div class="rect-ver"></div>
+      </div>
+      <div class="shape" id="rect-hor">
+        <div class="rect-hor"></div>
+      </div>
+    </div>
+
+    <div class="form-room">
+      <div>
+        <label for="">How many tables</label>
+        <input
+          id="table"
+          type="number"
+          min="0"
+          max="99"
+          placeholder="0"
+          required
+        />
+      </div>
+      <div>
+        <label for="">How many seats</label>
+        <input
+          id="seat"
+          type="number"
+          min="0"
+          max="200"
+          placeholder="0"
+          required
+        />
+      </div>
+    </div>
+    <div class="validate">
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

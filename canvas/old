@@ -1,0 +1,55 @@
+function deleteShape(type, index) {
+    if (!index) {
+        console.log('shape '+ type);
+        console.log(document.getElementsByClassName('shape '+ type));
+        document.getElementsByClassName('shape '+ type).remove();
+        return;
+    }
+    document.getElementsByClassName('shape '+ type)[index].remove();
+
+}
+
+
+
+// Drap and drop management
+document.addEventListener('mousedown', (e) => {
+    if (e.target.parentNode.classList.contains('shape')) {
+        isDragging = true;
+        draggedShape = e.target.parentNode;
+        console.log(draggedShape);
+        offsetX = e.clientX - draggedShape.getBoundingClientRect().left;
+        offsetY = e.clientY - draggedShape.getBoundingClientRect().top;
+
+        document.addEventListener('mousemove', moveShape);
+        document.addEventListener('mouseup', stopMovingShape);
+  
+        function moveShape(event) {
+            const newX = event.clientX - offsetX;
+            const newY = event.clientY - offsetY;
+            draggedShape.style.left = newX + "px";
+            draggedShape.style.top = newY + "px";
+            console.log(newX, newY);
+        }
+  
+        function stopMovingShape() {
+            isDragging = false;
+            draggedShape = null;
+            document.removeEventListener("mousemove", moveShape);
+            document.removeEventListener("mouseup", stopMovingShape);
+        }
+    }
+});
+document.addEventListener("mouseup", () => {
+    isDragging = false;
+    isResizing = false;
+});
+
+
+    // Drag n Drop
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+            console.log(e.target.parentElement);
+            shape.style.left = e.clientX - offsetX + "px";
+            shape.style.top = e.clientY - offsetY + "px";
+        }
+    });
