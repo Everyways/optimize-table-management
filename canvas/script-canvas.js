@@ -17,7 +17,7 @@ let isDragging = false;
 let draggedShape = null;
 const shapePlaceholder = document.getElementById('room-assets');
 
-function createShape(type, index) {
+function createShape(type, index, attr) {
     const shape = document.createElement('div');
     shape.setAttribute('index', index);
     shape.className = 'shape ' + type;
@@ -56,6 +56,11 @@ function createShape(type, index) {
             console.log(`Sorry, we are out of ${type}.`);
     }
 
+    if (attr) {
+        shape.style.top = attr.top + 'px';
+        shape.style.left = attr.left + 'px';
+    }
+
     shape.addEventListener('dragstart', handleDragStart);
     shape.addEventListener('dragend', handleDragEnd);
     shape.addEventListener('click', handleClick);
@@ -89,15 +94,79 @@ function handleClick(e) {
 }
 
 function deleteShape(nbToDelete, cssClass) {
-    console.log('nbToDelete :',nbToDelete);
     let nbPositiveVal = nbToDelete+1;
     let shapesToDel = document.getElementsByClassName(cssClass);
 
     for (let i = 1; i < shapesToDel.length; i++) {
         if (i < nbPositiveVal) {
-            console.log(i);
             shapesToDel[i].remove();
         }
+    }
+}
+
+function initShapes() {
+    const frame = localStorage.getItem("configframe");
+    let thisContainerWidth = document.getElementById('room-config').offsetWidth;
+    let thisContainerHeight = document.getElementById('room-config').offsetHeight;
+    let previousSaving = JSON.parse(localStorage.getItem("shapesData"));
+    let heightRatio, widthRatio;
+    
+    // if already saved values
+    if (previousSaving && previousSaving.length > 0) {
+        previousSaving.forEach(item => {
+            initFrame(item.frame);
+            heightRatio = thisContainerHeight / item.containerHeight;
+            widthRatio = thisContainerWidth / item.containerWidth;
+
+            createShape(item.type, item.id, {
+                top: parseInt(item.top.replace('px', '')) * heightRatio,
+                left: parseInt(item.left.replace('px', '')) * widthRatio
+            });
+        });
+    } else {
+        console.log(frame);
+        initFrame(frame);
+    }
+}
+
+function initInputs() {
+    if (nbTable8 > 0) {
+        document.getElementById('table-8').value = nbTable8;
+    }
+    if (nbTable6 > 0) {
+        document.getElementById('table-6').value = nbTable6;
+    }
+    if (nbTable4 > 0) {
+        document.getElementById('table-4').value = nbTable4;
+    }
+    if (nbTable2 > 0) {
+        document.getElementById('table-2').value = nbTable2;
+    }
+
+    // bouton de creation des formes
+    document.querySelectorAll('[id*=table-]').forEach(el => el.addEventListener('change', function (e) {
+        let nbExistingTypeShapes = document.getElementsByClassName('shape '+this.id).length;
+        let diff = e.target.value -  nbExistingTypeShapes;
+            if ( diff > 0 ) {
+            for (let i = 1; i < diff+1; i++) {
+                let newIndex = nbExistingTypeShapes++;
+                createShape(this.id, newIndex);
+            }
+        }
+        else if (nbExistingTypeShapes > e.target.value) {
+            deleteShape(nbExistingTypeShapes-e.target.value, 'shape '+this.id);
+        }
+    }));
+}
+
+function initFrame(frame) {
+    console.log(frame);
+    dragNDropContainerHeight = document.getElementById('canvas').offsetHeight;
+    dragNDropContainerWidth = document.getElementById('canvas').offsetWidth;
+    document.getElementById('canvas').classList.add(frame);
+    //if frame = polygon
+    if (frame === 'hexagon') {
+        document.getElementsByClassName('canvas hexagon')[0].innerHTML = "<div class='hexagon-inner'></div>";
     }
 }
 
@@ -115,64 +184,22 @@ const checkRotate = (n) => {
     return n;
 };
 
-
 document.addEventListener('DOMContentLoaded', () => {
-    const frame = localStorage.getItem('configframe');
-    const nbTableUser = localStorage.getItem('configtable');
-    const nbSeatUser = localStorage.getItem('configseat');
-    // set up values
-    document.getElementById('canvas').classList.add(frame);
-    document.getElementById('set-room').innerHTML = frame;
-    document.getElementById('set-table').innerHTML = nbTableUser;
-    document.getElementById('set-seat').innerHTML = nbSeatUser;
-    dragNDropContainerHeight = document.getElementById('canvas').offsetHeight;
-    dragNDropContainerWidth = document.getElementById('canvas').offsetWidth;
-
-    //if frame = polygon
-    if (frame === 'hexagon') {
-        document.getElementsByClassName('canvas hexagon')[0].innerHTML = "<div class='hexagon-inner'></div>";
-    }
-
-    // bouton de creation des formes
-    document.querySelectorAll('[id*=table-]').forEach(el => el.addEventListener('change', function (e) {
-        let nbExistingTypeShapes = document.getElementsByClassName('shape '+this.id).length;
-        let diff = e.target.value -  nbExistingTypeShapes;
-         if ( diff > 0 ) {
-            for (let i = 1; i < diff+1; i++) {
-                let newIndex = nbExistingTypeShapes++;
-                createShape(this.id, newIndex);
-            }
-        }
-        else if (nbExistingTypeShapes > e.target.value) {
-            deleteShape(nbExistingTypeShapes-e.target.value, 'shape '+this.id);
-        }
-    }));
-
-
-    document.getElementById('chair').addEventListener('change', (event) => {
-        let diff = event.target.value - nbChair;
-        if (nbChair < event.target.value) {
-            for (let i = 1; i < diff+1; i++) {
-                createShape('chair', nbChair);
-            }
-        } 
-    });
-    document.getElementById('armchair').addEventListener('change', (event) => {
-        let diff = event.target.value - nbArmchair;
-        if (nbArmchair < event.target.value) {
-            for (let i = 1; i < diff+1; i++) {
-                createShape('armchair', nbArmchair);
-            }
-        } 
-    });
+    initShapes();
+    initInputs();
 });
 
 document.getElementById('validateBtn').addEventListener('click', (event) => {
+    const frame = localStorage.getItem('configframe');
+    let shapeData = {};
     let positionedShapes = document.querySelectorAll('[class*=shape ]');
-    
+    localStorage.clear();
+
     for (let i = 0; i < positionedShapes.length; i++) {
-        const shapeData = {
-            frame: localStorage.getItem('configframe'),
+        shapeData = {
+            frame: frame,
+            containerWidth: document.getElementById('room-config').offsetWidth,
+            containerHeight: document.getElementById('room-config').offsetHeight,
             id: positionedShapes[i].getAttribute('index'),
             type: positionedShapes[i].className.replace('shape ',''),
             left: positionedShapes[i].style.left,
@@ -184,4 +211,8 @@ document.getElementById('validateBtn').addEventListener('click', (event) => {
     const shapesDataJSON = JSON.stringify(dataShapes);
     localStorage.setItem("shapesData", shapesDataJSON);
     console.log("shapes data saved!");
+});
+
+document.getElementById('resetBtn').addEventListener('click', (event) => {
+    localStorage.clear();
 });

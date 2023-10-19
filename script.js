@@ -1,18 +1,12 @@
-document.getElementById("hexagon").addEventListener("click", () => {
-  playWithStorage("frame", "hexagon");
+shapes = ['hexagon', 'circle', 'trapeze', 'rect-hor', 'rect-ver'];
+
+shapes.forEach( item => {
+  document.getElementById(item).addEventListener("click", () => {
+    playWithStorage("frame", item);
+    highlightShape(item);
+  });
 });
-document.getElementById("circle").addEventListener("click", () => {
-  playWithStorage("frame", "circle");
-});
-document.getElementById("trapeze").addEventListener("click", () => {
-  playWithStorage("frame", "trapeze");
-});
-document.getElementById("rect-hor").addEventListener("click", () => {
-  playWithStorage("frame", "rect-hor");
-});
-document.getElementById("rect-ver").addEventListener("click", () => {
-  playWithStorage("frame", "rect-ver");
-});
+
 document.getElementById("table").addEventListener("change", (event) => {
   playWithStorage("table", event.target.value);
 });
@@ -24,3 +18,12 @@ function playWithStorage(index, item) {
     localStorage.setItem('config'+index, item);
 }
 
+function highlightShape(shape) {
+  shapes.forEach( item => {
+    document.getElementById(item).classList.remove('selected-shape');
+  });
+  
+  if (!document.getElementById(shape).classList.contains('selected-shape')) {
+    document.getElementById(shape).classList.add('selected-shape');
+  } 
+}

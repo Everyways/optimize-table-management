@@ -4,58 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shapes Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <div id="room-config" class="room-config">
-            <div draggable="true" id="canvas" class="canvas">
+<body class="font-sans text-lg">
+    <div class="overflow-hidden p-4">
+        <ul class="flex">
+          <li class="flex-1 mr-2">
+            <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
+            href="./../index.html">
+              Frame definition
+            </a>
+          </li>
+          <li class="flex-1 mr-2">
+            <a class="text-center block border border-white py-2 px-4 bg-white text-blue-700 cursor-not-allowed" 
+            href="./canvas/index.html">
+              Table postionning
+            </a>
+          </li>
+          <li class="flex-1 mr-2">
+            <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
+            href="./../matching/index.html">
+              Table matching
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="overflow-hidden p-4">
+        <div class="container">
+            <div id="room-config" class="room-config">
+                <div draggable="true" id="canvas" class="canvas">
+                </div>
+                <div id="room-assets"></div>
             </div>
-            <div id="room-assets"></div>
-        </div>
-        <div class="settings">
-            <div class="reminder">
-            <dl>
-                <dt>Your setup</dt>
-                <dd>Your room match a <span id="set-room"></span>.</dd>
-                <dd>Their is <span id="set-table"></span> tables.</dd>             
-                <dd>Their is <span id="set-seat"></span> seats.</dd>
-            </dl>
+            <div class="settings">
+                <div>
+                    <h3>Set up your place</h3>
+                    
+                    <div class="md:flex md:items-center mb-6 mt-6">
+                        <div class="md:w-1/3">
+                            <label class="block-500 md:text-right mb-1 md:mb-0 pr-4" for="table-2">
+                            x2
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            id="table-2" type="number" min="0" max="99" placeholder="0" class="text-blue-700">
+                        </div>
+                    </div>
+                    <div class="md:flex md:items-center mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block-500 md:text-right mb-1 md:mb-0 pr-4" for="table-4">
+                            x4
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            id="table-4" type="number" min="0" max="99" placeholder="0" class="text-blue-700">
+                        </div>
+                    </div>
+                    <div class="md:flex md:items-center mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block-500 md:text-right mb-1 md:mb-0 pr-4" for="table-6">
+                            x6
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            id="table-6" type="number" min="0" max="99" placeholder="0" class="text-blue-700">
+                        </div>
+                    </div>
+                    <div class="md:flex md:items-center mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block-500 md:text-right mb-1 md:mb-0 pr-4" for="table-8">
+                            x8
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            id="table-8" type="number" min="0" max="99" placeholder="0" class="text-blue-700">
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <button id="validateBtn" class="bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        Validate
+                    </button>
+                    <button id="resetBtn" class="bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        Reset
+                    </button>
+                </p>
+                <script src="script-canvas.js"></script>
             </div>
-            <div>
-                <h3>Tables</h3>
-                <p>
-                    <label for="">x2</label>
-                    <input id="table-2" type="number" min="0" max="99" placeholder="0" />
-                </p>
-                <p>
-                    <label for="">x4</label>
-                    <input id="table-4" type="number" min="0" max="99" placeholder="0" />
-                </p>
-                <p>
-                    <label for="">x6</label>
-                    <input id="table-6" type="number" min="0" max="99" placeholder="0" />
-                </p>
-                <p>
-                    <label for="">x8</label>
-                    <input id="table-8" type="number" min="0" max="99" placeholder="0" />
-                </p>
-            </div>
-            <div>
-                <h3>Seats</h3>
-                <p>
-                    <label for="">chair</label>
-                    <input id="chair" type="number" min="0" max="99" placeholder="0"required/>
-                </p>
-                <p>
-                    <label for="">armchair</label>
-                    <input id="armchair" type="number" min="0" max="99" placeholder="0"required/>
-                </p>
-            </div>
-            <p>
-                <button class="validate-btn" id="validateBtn">Validate</button>
-            </p>
-            <script src="script.js"></script>
         </div>
     </div>
 </body>
