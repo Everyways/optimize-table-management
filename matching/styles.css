@@ -126,8 +126,8 @@ body {
   border: thin solid white;
 }
 .canvas.circle {
-  width: 50rem;
-  height: 50rem;
+  height: calc(90vw / 2);
+  width: calc(90vw / 2);
   opacity: 1;
   text-align: center;
   margin: auto;
@@ -137,10 +137,10 @@ body {
   overflow: hidden;
   display: inline-flex;
   margin: auto;
-  width: 50rem;
-  height: 50rem;
+  width: calc(90vw / 2);
+  height: calc(90vw / 2);
   transform: rotate(-30deg) skewX(30deg);
-  border-radius: 0.5rem;
+  border-radius: calc(10vw / 2);;
 }
 
 .canvas .hexagon-inner {
@@ -149,26 +149,26 @@ body {
 
 /* trapeze */
 .canvas.trapeze {
-  border-bottom: 20rem solid #0f9fff;
-  border-left: 10rem solid transparent;
-  border-right: 10rem solid transparent;
+  border-bottom: calc(25vw / 2) solid #0f9fff;
+  border-left: calc(15vw / 2) solid transparent;
+  border-right: calc(15vw / 2) solid transparent;
   height: 0;
-  width: 50rem;
+  width: calc(90vw / 2);
   opacity: 1;
   margin: auto;
 }
 
 /* rectangle */
 .canvas.rect-ver {
-  height: 50rem;
-  width: 25rem;
+  height: calc(90vw / 2);
+  width: calc(45vw / 2);
   background-color: #06ffc9;
   opacity: 1;
   margin: auto;
 }
 .canvas.rect-hor {
-  height: 25rem;
-  width: 50rem;
+  height: calc(45vw / 2);
+  width: calc(90vw / 2);
   background-color: #ff4747;
   opacity: 1;
   margin: auto;

@@ -21,16 +21,16 @@ body {
   vertical-align: middle;
   cursor: pointer;
 }
-.selected-shape {
-  border: thin solid black;
+.selected-shape div {
+  opacity: 1;
 }
 /* polygon */
 .hexagon {
   overflow: hidden;
   display: inline-flex;
-  margin: 4rem 0;
-  width: 10rem;
-  height: 10rem;
+  /* margin: calc(5vw / 2) 0; */
+  width: calc(20vw / 2);
+  height: calc(20vw / 2);
   transform: rotate(-30deg) skewX(30deg);
   border-radius: 0.5rem;
 }
@@ -56,10 +56,11 @@ body {
 .hexagon-inner:hover {
   opacity: 1;
 }
+
 /* Circle */
 .circle {
-  height: 10rem;
-  width: 10rem;
+  height: calc(20vw / 2);
+  width: calc(20vw / 2);
   /* background-color: #18b6ff; */
   background-color: white;
   border-radius: 50%;
@@ -71,12 +72,11 @@ body {
 }
 /* Trapeze*/
 .trapeze {
-  /* border-bottom: 4rem solid #0f9fff; */
-  border-bottom: 4rem solid white;
-  border-left: 2rem solid transparent;
-  border-right: 2rem solid transparent;
   height: 0;
-  width: 10rem;
+  border-bottom: calc(20vw / 2) solid white;
+  border-left: calc(5vw / 2) solid transparent;
+  border-right: calc(5vw / 2) solid transparent;
+  width: calc(20vw / 2);
   opacity: 0.15;
   transition: opacity 0.75s;
 }
@@ -85,8 +85,8 @@ body {
 }
 /* rectangle */
 .rect-ver {
-  height: 10rem;
-  width: 5rem;
+  height: calc(20vw / 2);
+  width: calc(15vw / 2);
   /* background-color: #06ffc9; */
   background-color: white;
   opacity: 0.15;
@@ -96,8 +96,8 @@ body {
   opacity: 1;
 }
 .rect-hor {
-  height: 5rem;
-  width: 10rem;
+  height: calc(15vw / 2);
+  width: calc(20vw / 2);
   /* background-color: #ff4747; */
   background-color: white;
   opacity: 0.15;

@@ -23,7 +23,7 @@ function createShape(type, index, attr) {
     shape.className = 'shape ' + type;
     switch(type) {
         case 'table-8':
-            shape.innerHTML = "<img src='assets/room-elements/table-8.svg' style='' alt='table'/>";
+            shape.innerHTML = "<img src='assets/room-elements/table-8.svg' style='' alt='table' />";
             shape.setAttribute('rotate', 0);
             nbTable8++;
             break;
@@ -60,18 +60,21 @@ function createShape(type, index, attr) {
         shape.style.top = attr.top + 'px';
         shape.style.left = attr.left + 'px';
     }
-
+    console.log(shape);
     shape.addEventListener('dragstart', handleDragStart);
     shape.addEventListener('dragend', handleDragEnd);
+    shape.addEventListener('dragover', handleDragOver);
     shape.addEventListener('click', handleClick);
 
     shapePlaceholder.appendChild(shape);
 }
 
 function handleDragStart(e) {
+    console.log('pouet handle');
     this.style.opacity = '0.4';
     isDragging = true;
     draggedShape = e.target.parentNode;
+    console.log(draggedShape);
     offsetX = e.clientX - draggedShape.getBoundingClientRect().left;
     offsetY = e.clientY - draggedShape.getBoundingClientRect().top;
 }
@@ -87,10 +90,16 @@ function handleDragEnd(e) {
 }
 
 function handleClick(e) {
+    console.log('pouet click');
     let nbRotate = this.getAttribute('rotate');
     let rotateValue =  checkDeg(Number(nbRotate)+1);
     this.setAttribute('rotate', rotateValue);
     this.style.transform = 'rotate('+checkRotate(rotateValue * 90)+'deg)';
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    return false;
 }
 
 function deleteShape(nbToDelete, cssClass) {
@@ -130,6 +139,15 @@ function initShapes() {
 }
 
 function initInputs() {
+    document.getElementById('toggleConfig').addEventListener('click', function (e) {
+        if (this.checked) {
+            document.getElementById('config').style.display = 'block';
+            document.getElementById('room-config').style.width = '80%';
+        } else {
+            document.getElementById('config').style.display = 'none';
+            document.getElementById('room-config').style.width = '99%';
+        }
+    });
     if (nbTable8 > 0) {
         document.getElementById('table-8').value = nbTable8;
     }

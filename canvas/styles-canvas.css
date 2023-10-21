@@ -1,0 +1,65 @@
+/**specific to canva*/
+.global {
+  display: inline-flex;
+  width: 100%;
+}
+.room-config {
+  display: inline-flex;
+  width: 80%;
+  border-right: solid white;
+}
+#room-assets {
+  height: 100%;
+  width: 20%;
+}
+.settings {
+  width: 20%;
+  padding: 2rem;
+}
+.reminder {
+  padding: 1rem;
+  border: thin solid white;
+}
+.canvas {
+  opacity: 1;
+  margin: auto;
+  display: inline;
+  content: "";
+}
+.canvas.circle {
+  width: calc(90vw / 2);
+  height: calc(90vw / 2);
+  text-align: center;
+}
+/* polygon */
+.canvas.hexagon {
+  overflow: hidden;
+  display: inline-flex;
+  width: calc(90vw / 2);
+  height: calc(90vw / 2);
+  transform: rotate(-30deg) skewX(30deg);
+  border-radius: 0.5rem;
+}
+
+.canvas .hexagon-inner {
+  opacity: 1;
+}
+
+/* trapeze */
+.canvas.trapeze {
+  border-bottom: calc(90vw / 2) solid white;
+  border-left: calc(20vw / 2) solid transparent;
+  border-right: calc(20vw / 2) solid transparent;
+  height: 0;
+  width: calc(90vw / 2);
+}
+
+/* rectangle */
+.canvas.rect-ver {
+  height: calc(90vw / 2);
+  width: calc(75vw / 2);
+}
+.canvas.rect-hor {
+  height: calc(70vw / 2);
+  width: calc(90vw / 2);
+}
