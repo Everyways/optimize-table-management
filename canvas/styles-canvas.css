@@ -25,6 +25,7 @@
   margin: auto;
   display: inline;
   content: "";
+  position: relative;
 }
 .canvas.circle {
   width: calc(90vw / 2);

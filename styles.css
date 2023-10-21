@@ -3,11 +3,6 @@
 }
 body {
   overflow: hidden;
-  /* background: linear-gradient(
-    90deg,
-    rgb(228, 253, 255) 25%,
-    rgb(152, 179, 255) 75%
-  ); */
   background-color: #5E17EB;
   color: white;
 }

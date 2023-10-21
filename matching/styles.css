@@ -1,15 +1,24 @@
-* {
-  box-sizing: border-box;
+/**specific to canva*/
+.global {
+  display: inline-flex;
+  width: 100%;
 }
-body {
-  overflow: hidden;
-  /* background: linear-gradient(
-    90deg,
-    rgb(228, 253, 255) 25%,
-    rgb(152, 179, 255) 75%
-  ); */
-  background-color: #5E17EB;
-  color: white;
+.room-config {
+  display: inline-flex;
+  width: 80%;
+  border-right: solid white;
+}
+#room-assets {
+  height: 100%;
+  width: 20%;
+}
+.settings {
+  width: 20%;
+  padding: 2rem;
+}
+.reminder {
+  padding: 1rem;
+  border: thin solid white;
 }
 .canvas {
   position: relative;

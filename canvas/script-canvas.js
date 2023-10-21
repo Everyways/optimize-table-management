@@ -17,89 +17,84 @@ let isDragging = false;
 let draggedShape = null;
 const shapePlaceholder = document.getElementById('room-assets');
 
-function createShape(type, index, attr) {
-    const shape = document.createElement('div');
-    shape.setAttribute('index', index);
-    shape.className = 'shape ' + type;
-    switch(type) {
-        case 'table-8':
-            shape.innerHTML = "<img src='assets/room-elements/table-8.svg' style='' alt='table' />";
-            shape.setAttribute('rotate', 0);
-            nbTable8++;
-            break;
-        case 'table-6':
-            shape.innerHTML = "<img src='assets/room-elements/table-6.svg' style='' alt='table'/>";
-            shape.setAttribute('rotate', 0);
-            nbTable6++;
-            break;
-        case 'table-4':
-            shape.innerHTML = "<img src='assets/room-elements/table-4.svg' style='' alt='table'/>";
-            shape.setAttribute('rotate', 0);
-            nbTable4++;
-            break;
-        case 'table-2':
-            shape.innerHTML = "<img src='assets/room-elements/table-2.svg' style='' alt='table'/>";
-            shape.setAttribute('rotate', 0);
-            nbTable2++;
-            break;
-        case 'chair':
-            shape.setAttribute('rotate', 0);
-            shape.innerHTML = "<img src='assets/room-elements/chair.svg' style='' alt='seat'/>";
-            nbChair++;
-            break;
-        case 'armchair':
-            shape.setAttribute('rotate', 0);
-            shape.innerHTML = "<img src='assets/room-elements/armchair.svg' style='' alt='seat'/>";
-            nbArmchair++;
-            break;
-        default:
-            console.log(`Sorry, we are out of ${type}.`);
-    }
 
-    if (attr) {
-        shape.style.top = attr.top + 'px';
-        shape.style.left = attr.left + 'px';
-    }
-    console.log(shape);
-    shape.addEventListener('dragstart', handleDragStart);
-    shape.addEventListener('dragend', handleDragEnd);
-    shape.addEventListener('dragover', handleDragOver);
-    shape.addEventListener('click', handleClick);
+/**
+ * Handles the drop event.
+ *
+ * @param {Event} e - The drop event.
+ * @returns {void} This function does not return anything.
+ */
+function handleDrop(e) {
+    e.preventDefault();
+    if (!draggedShape) return console.warn('No shape is being dragged.');
 
-    shapePlaceholder.appendChild(shape);
-}
+    const { clientX, clientY } = e;
+    const newX = clientX - offsetX;
+    const newY = clientY - offsetY;
 
-function handleDragStart(e) {
-    console.log('pouet handle');
-    this.style.opacity = '0.4';
-    isDragging = true;
-    draggedShape = e.target.parentNode;
-    console.log(draggedShape);
-    offsetX = e.clientX - draggedShape.getBoundingClientRect().left;
-    offsetY = e.clientY - draggedShape.getBoundingClientRect().top;
-}
-
-function handleDragEnd(e) {
-    this.style.opacity = '1';
-    const newX = e.clientX - offsetX;
-    const newY = e.clientY - offsetY;
-    draggedShape.style.left = newX + "px";
-    draggedShape.style.top = newY + "px";
+    Object.assign(draggedShape.style, {
+        left: `${newX}px`,
+        top: `${newY}px`,
+    });
+    
     isDragging = false;
     draggedShape = null;
 }
 
-function handleClick(e) {
-    console.log('pouet click');
-    let nbRotate = this.getAttribute('rotate');
-    let rotateValue =  checkDeg(Number(nbRotate)+1);
-    this.setAttribute('rotate', rotateValue);
-    this.style.transform = 'rotate('+checkRotate(rotateValue * 90)+'deg)';
+/**
+ * Handles the drag start event.
+ *
+ * @param {Object} e - The event object.
+ * @return {undefined} No return value.
+ */
+function handleDragStart(e) {
+    const { target } = e;
+    draggedShape = target.parentNode;
+    if (!draggedShape) {
+        console.warn('No shape is being dragged.');
+        return;
+    }
+    this.style.opacity = '0.4';
+    isDragging = true;
+    const { left, top } = draggedShape.getBoundingClientRect();
+    offsetX = e.clientX - left;
+    offsetY = e.clientY - top;
 }
 
-function handleDragOver(e) {
-    e.preventDefault();
-    return false;
+/**
+ * Handles the end of a drag event.
+ *
+ * @param {Event} e - The drag event object.
+ * @return {undefined} This function does not return anything.
+ */
+function handleDragEnd(e) {
+    if (!draggedShape) {
+        console.warn('No shape is being dragged.');
+        return;
+    }
+
+    this.style.opacity = '1';
+    const { offsetX, offsetY, clientX, clientY } = e;
+    const newX = clientX - offsetX;
+    const newY = clientY - offsetY;
+    const style = draggedShape.style;
+    style.left = `${newX}px`;
+    style.top = `${newY}px`;
+    style.position = 'fixed';
+    draggedShape = null;
+}
+
+/**
+ * Handles the click event.
+ *
+ * @param {Event} e - The click event object.
+ * @return {void} This function does not return anything.
+ */
+function handleClick(e) {
+    const nbRotate = Number(this.getAttribute('rotate'));
+    const rotateValue = checkDeg(nbRotate + 1);
+    this.setAttribute('rotate', rotateValue);
+    this.style.transform = `rotate(${checkRotate(rotateValue * 90)}deg)`;
 }
 
 function deleteShape(nbToDelete, cssClass) {
@@ -113,79 +108,51 @@ function deleteShape(nbToDelete, cssClass) {
     }
 }
 
-function initShapes() {
-    const frame = localStorage.getItem("configframe");
-    let thisContainerWidth = document.getElementById('room-config').offsetWidth;
-    let thisContainerHeight = document.getElementById('room-config').offsetHeight;
-    let previousSaving = JSON.parse(localStorage.getItem("shapesData"));
-    let heightRatio, widthRatio;
-    
-    // if already saved values
-    if (previousSaving && previousSaving.length > 0) {
-        previousSaving.forEach(item => {
-            initFrame(item.frame);
-            heightRatio = thisContainerHeight / item.containerHeight;
-            widthRatio = thisContainerWidth / item.containerWidth;
-
-            createShape(item.type, item.id, {
-                top: parseInt(item.top.replace('px', '')) * heightRatio,
-                left: parseInt(item.left.replace('px', '')) * widthRatio
-            });
-        });
-    } else {
-        console.log(frame);
-        initFrame(frame);
-    }
-}
-
+/**
+ * Initializes the inputs for the page.
+ *
+ * @param {type} paramName - description of parameter
+ * @return {type} description of return value
+ */
 function initInputs() {
-    document.getElementById('toggleConfig').addEventListener('click', function (e) {
-        if (this.checked) {
-            document.getElementById('config').style.display = 'block';
-            document.getElementById('room-config').style.width = '80%';
-        } else {
-            document.getElementById('config').style.display = 'none';
-            document.getElementById('room-config').style.width = '99%';
-        }
+    const toggleConfig = document.getElementById('toggleConfig');
+    const config = document.getElementById('config');
+    const roomConfig = document.getElementById('room-config');
+    const table8 = document.getElementById('table-8');
+    const table6 = document.getElementById('table-6');
+    const table4 = document.getElementById('table-4');
+    const table2 = document.getElementById('table-2');
+
+    toggleConfig.addEventListener('click', function (e) {
+        config.style.display = this.checked ? 'block' : 'none';
+        roomConfig.style.width = this.checked ? '80%' : '99%';
     });
+
     if (nbTable8 > 0) {
-        document.getElementById('table-8').value = nbTable8;
+        table8.value = nbTable8;
     }
     if (nbTable6 > 0) {
-        document.getElementById('table-6').value = nbTable6;
+        table6.value = nbTable6;
     }
     if (nbTable4 > 0) {
-        document.getElementById('table-4').value = nbTable4;
+        table4.value = nbTable4;
     }
     if (nbTable2 > 0) {
-        document.getElementById('table-2').value = nbTable2;
+        table2.value = nbTable2;
     }
 
-    // bouton de creation des formes
     document.querySelectorAll('[id*=table-]').forEach(el => el.addEventListener('change', function (e) {
-        let nbExistingTypeShapes = document.getElementsByClassName('shape '+this.id).length;
-        let diff = e.target.value -  nbExistingTypeShapes;
-            if ( diff > 0 ) {
-            for (let i = 1; i < diff+1; i++) {
-                let newIndex = nbExistingTypeShapes++;
+        const nbExistingTypeShapes = document.getElementsByClassName('shape ' + this.id).length;
+        const diff = e.target.value - nbExistingTypeShapes;
+        if (diff > 0) {
+            for (let i = 0; i < diff; i++) {
+                const newIndex = nbExistingTypeShapes + i;
                 createShape(this.id, newIndex);
             }
-        }
-        else if (nbExistingTypeShapes > e.target.value) {
-            deleteShape(nbExistingTypeShapes-e.target.value, 'shape '+this.id);
+        } else if (nbExistingTypeShapes > e.target.value) {
+            deleteShape(nbExistingTypeShapes - e.target.value, 'shape ' + this.id);
         }
     }));
-}
-
-function initFrame(frame) {
-    console.log(frame);
-    dragNDropContainerHeight = document.getElementById('canvas').offsetHeight;
-    dragNDropContainerWidth = document.getElementById('canvas').offsetWidth;
-    document.getElementById('canvas').classList.add(frame);
-    //if frame = polygon
-    if (frame === 'hexagon') {
-        document.getElementsByClassName('canvas hexagon')[0].innerHTML = "<div class='hexagon-inner'></div>";
-    }
 }
 
 const checkDeg = (n) => {
@@ -203,34 +170,18 @@ const checkRotate = (n) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    initShapes();
+    initShapes('canvas');
     initInputs();
 });
 
 document.getElementById('validateBtn').addEventListener('click', (event) => {
     const frame = localStorage.getItem('configframe');
-    let shapeData = {};
-    let positionedShapes = document.querySelectorAll('[class*=shape ]');
-    localStorage.clear();
-
-    for (let i = 0; i < positionedShapes.length; i++) {
-        shapeData = {
-            frame: frame,
-            containerWidth: document.getElementById('room-config').offsetWidth,
-            containerHeight: document.getElementById('room-config').offsetHeight,
-            id: positionedShapes[i].getAttribute('index'),
-            type: positionedShapes[i].className.replace('shape ',''),
-            left: positionedShapes[i].style.left,
-            top: positionedShapes[i].style.top,
-          };
-        dataShapes.push(shapeData);
-    }
-
-    const shapesDataJSON = JSON.stringify(dataShapes);
-    localStorage.setItem("shapesData", shapesDataJSON);
+    localStorage.setItem("shapesData", jsonStringifyShapes(frame));
     console.log("shapes data saved!");
+    window.location.href = './../matching/';
 });
 
 document.getElementById('resetBtn').addEventListener('click', (event) => {
     localStorage.clear();
+    window.location.href = './../index.html';
 });

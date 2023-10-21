@@ -13,115 +13,49 @@ let dataShapes = [];
 const shapePlaceholder = document.getElementById('room-assets');
 const previousSaving = JSON.parse(localStorage.getItem("shapesData"));
 
-function createShape(type, index, attr) {
-    const shape = document.createElement('div');
-    shape.setAttribute('index', index);
-    shape.className = 'shape ' + type;
-    switch(type) {
-        case 'table-8':
-            shape.innerHTML = "<img src='assets/room-elements/table-8.svg' style='' alt='table 8 places'/>";
-            shape.setAttribute('rotate', 0);
-            shape.setAttribute('data-seats', 8);
-            nbTable8++;
-            break;
-        case 'table-6':
-            shape.innerHTML = "<img src='assets/room-elements/table-6.svg' style='' alt='table 6 places'/>";
-            shape.setAttribute('rotate', 0);
-            shape.setAttribute('data-seats', 6);
-            nbTable6++;
-            break;
-        case 'table-4':
-            shape.innerHTML = "<img src='assets/room-elements/table-4.svg' style='' alt='table 4 places'/>";
-            shape.setAttribute('rotate', 0);
-            shape.setAttribute('data-seats', 4);
-            nbTable4++;
-            break;
-        case 'table-2':
-            shape.innerHTML = "<img src='assets/room-elements/table-2.svg' style='' alt='table 2 places'/>";
-            shape.setAttribute('rotate', 0);
-            shape.setAttribute('data-seats', 2);
-            nbTable2++;
-            break;
-        case 'chair':
-            shape.setAttribute('rotate', 0);
-            shape.innerHTML = "<img src='assets/room-elements/chair.svg' style='' alt='seat'/>";
-            nbChair++;
-            break;
-        case 'armchair':
-            shape.setAttribute('rotate', 0);
-            shape.innerHTML = "<img src='assets/room-elements/armchair.svg' style='' alt='seat'/>";
-            nbArmchair++;
-            break;
-        default:
-            console.log(`Sorry, we are out of ${type}.`);
-    }
 
-    if (attr) {
-        shape.style.top = attr.top + 'px';
-        shape.style.left = attr.left + 'px';
-    }
-
-    shape.addEventListener('click', handleClick);
-
-    shapePlaceholder.appendChild(shape);
-}
-
+/**
+ * Handles the click event.
+ *
+ * @param {Event} e - The click event.
+ */
 function handleClick(e) {
-    const index = this.getAttribute('index');
-    let tableRefToDisplay = getPreviousIndex(index);
-    let oldIndex = document.getElementById('table-oldValue');
-    let nbSeats = this.getAttribute('data-seats');
-    let tableRef = document.getElementById('table-ref');
-    let tableMin = document.getElementById('table-from');
-    let tableMax = document.getElementById('table-to');
-    tableRef.disabled = false;
-    tableMin.disabled = false;
-    tableMax.disabled = false;
-    oldIndex.value = this.getAttribute('index');
-    tableRef.value = tableRefToDisplay;
-    tableMin.value = getTableNumberMini(index, nbSeats);
-    tableMax.value = getTableNumberMax(index, nbSeats);
+  const index = this.getAttribute('index');
+  const tableRefToDisplay = getPreviousIndex(index);
+  const oldIndex = document.getElementById('table-oldValue');
+  const nbSeats = this.getAttribute('data-seats');
+  const tableRef = document.getElementById('table-ref');
+  const tableMin = document.getElementById('table-from');
+  const tableMax = document.getElementById('table-to');
+
+  tableRef.disabled = false;
+  tableMin.disabled = false;
+  tableMax.disabled = false;
+  oldIndex.value = index;
+  tableRef.value = tableRefToDisplay;
+  tableMin.value = getTableNumberMini(index, nbSeats);
+  tableMax.value = getTableNumberMax(index, nbSeats);
 }
 
-
-function initShapes() {
-    let thisContainerWidth = document.getElementById('room-config').offsetWidth;
-    let thisContainerHeight = document.getElementById('room-config').offsetHeight;
-    
-    let heightRatio, widthRatio;
-    
-    if (previousSaving && previousSaving.length > 0) {
-        previousSaving.forEach(item => {
-            heightRatio = thisContainerHeight / item.containerHeight;
-            widthRatio = thisContainerWidth / item.containerWidth;
-            
-            initFrame(item.frame);
-            createShape(item.type, item.id, {
-                top: parseInt(item.top.replace('px', '')) * heightRatio,
-                left: parseInt(item.left.replace('px', '')) * widthRatio
-            });
-        });
-    }
-}
-
-function initFrame(frame) {
-    const canvas = document.getElementById('canvas');
-    dragNDropContainerHeight = canvas.offsetHeight;
-    dragNDropContainerWidth = canvas.offsetWidth;
-    canvas.classList.add(frame);
-    //if frame = polygon
-    if (frame === 'hexagon') {
-        document.getElementsByClassName('canvas hexagon')[0].innerHTML = "<div class='hexagon-inner'></div>";
-    }
-}
-
+/**
+ * Returns the previous index of an element in the `previousSaving` array based on the provided `index`.
+ *
+ * @param {number} index - The index of the element.
+ * @return {number} The previous index of the element, or the provided index if it does not exist in the `previousSaving` array.
+ */
 function getPreviousIndex(index) {
-    let returnIndex = index;
-    let previousIndex = previousSaving.find(element => element.id == returnIndex);
+    const previousIndex = previousSaving.find(element => element.id === index);
 
-    return previousIndex.customerRef != undefined ? previousIndex.customerRef : index;
+    return previousIndex?.customerRef ?? index;
 }
 
+/**
+ * Returns the number of seats for a table.
+ *
+ * @param {number} index - The index of the table.
+ * @param {number} nbSeats - The default number of seats for the table.
+ * @return {number} - The number of seats for the table.
+ */
 function getTableNumberMini(index, nbSeats) {
     let returnIndex = index;
     let objectSelected = previousSaving.find(element => element.id == returnIndex);
@@ -129,6 +63,13 @@ function getTableNumberMini(index, nbSeats) {
     return objectSelected.nbSeatsMini != undefined ? objectSelected.nbSeatsMini : nbSeats;
 }
 
+/**
+ * Retrieves the maximum number of seats for a table based on the given index.
+ *
+ * @param {number} index - The index of the table.
+ * @param {number} nbSeats - The default number of seats for the table.
+ * @return {number} The maximum number of seats for the table.
+ */
 function getTableNumberMax(index, nbSeats) {
     let returnIndex = index;
     let objectSelected = previousSaving.find(element => element.id == returnIndex);
@@ -137,11 +78,19 @@ function getTableNumberMax(index, nbSeats) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initShapes();
-    // initInputs();
+    initShapes('matching');
+    document.getElementById('toggleConfig').addEventListener('click', function (e) {
+        if (this.checked) {
+            document.getElementById('config').style.display = 'block';
+            document.getElementById('room-config').style.width = '80%';
+        } else {
+            document.getElementById('config').style.display = 'none';
+            document.getElementById('room-config').style.width = '99%';
+        }
+    });
 });
 
-document.getElementById('validateBtn').addEventListener('click', (event) => {
+document.getElementById('validateMatching').addEventListener('click', (event) => {
     const oldIndex = document.getElementById('table-oldValue');
     const customerRefEl = document.getElementById('table-ref');
     const nbSeatMiniEl = document.getElementById('table-from');

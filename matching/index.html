@@ -7,64 +7,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="https://i0.wp.com/upsalt.io/wp-content/uploads/2023/09/UP-9.png?fit=32%2C32&#038;ssl=1" sizes="32x32" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link rel="stylesheet" href="styles.css">
-    <script src="./script-matching.js"></script>
+    <link rel="stylesheet" href="./../styles.css">
+    <link rel="stylesheet" href="./../canvas/styles-canvas.css">
+    
 </head>
 <body class="font-sans text-lg">
-    <div class="overflow-hidden p-4">
-        <ul class="flex">
-          <li class="flex-1 mr-2">
-            <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
-            href="./../index.html">
-              Frame definition
-            </a>
-          </li>
-          <li class="flex-1 mr-2">
-            <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
-            href="./../canvas/index.html">
-              Table postionning
-            </a>
-          </li>
-          <li class="flex-1 mr-2">
-            <a class="text-center block border border-white py-2 px-4 bg-white text-blue-700 cursor-not-allowed" 
-            href="#">
-              Table matching
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="overflow-hidden p-4">
-        <div class="container">
-            <div id="room-config" class="room-config">
-                <div draggable="true" id="canvas" class="canvas">
-                </div>
-                <div id="room-assets"></div>
+  <div class="overflow-hidden p-4">
+    <ul class="flex">
+      <li class="flex-1 mr-2">
+        <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
+        href="./../index.html">
+          Frame definition
+        </a>
+      </li>
+      <li class="flex-1 mr-2">
+        <a class="text-center block border border-white hover:border-gray-200 text-white hover:bg-gray-200 py-2 px-4" 
+        href="./../canvas/index.html">
+          Table postionning
+        </a>
+      </li>
+      <li class="flex-1 mr-2">
+        <a class="text-center block border border-white py-2 px-4 bg-white text-blue-700 cursor-not-allowed" 
+        href="#">
+          Table matching
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="p-4">
+    <div class="global">
+        <div id="room-config" class="room-config">
+            <div draggable="true" id="canvas" class="canvas">
             </div>
-            <div class="settings">
-                <div class="mb-6 mt-6">
-                    <h3>Matches your tables</h3>
-                    <p>click on the table and fill your room reference</p>
-                </div>
-                <div id="matching">
-                    <label for="table-ref">Table reference</label>
-                    <input type="text" id='table-ref' value="" class="text-blue-700" disabled />
-                    <input type="hidden" id='table-oldValue' value="" />
-                <div>
-                    <label for="table-from">Places min</label>
-                    <input type="number" id='table-from' value="" class="text-blue-700" disabled/>
-                </div>
-                <div>
-                    <label for="table-to">Places max</label>
-                    <input type="numer" id='table-to' value="" class="text-blue-700" disabled/>
-                </div>
+            <div id="room-assets">
+              <label class="relative inline-flex items-center mr-5 cursor-pointer">
+                <input id="toggleConfig" type="checkbox" value="" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                <span class="ml-3 text-sm font-medium text-white dark:text-gray-300">Toggle set-up</span>
+            </label>
             </div>
-            <p>
-                <button id="validateBtn" class="bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
+        </div>
+        <div id="config" class="settings">
+            <div class="mb-6 mt-6">
+                <h3>Matches your tables</h3>
+                <p>click on the table and fill your room reference</p>
+            </div>
+            <div id="matching">
+              <div class="mb-6">
+                <label for="table-ref">Table reference</label>
+                <input type="text" id='table-ref' value="" class="text-blue-700" disabled />
+                <input type="hidden" id='table-oldValue' value="" />
+              </div>
+              <div class="mb-6">
+                  <label for="table-from">Places min</label>
+                  <input type="number" id='table-from' value="" class="text-blue-700" disabled/>
+              </div>
+              <div class="mb-6">
+                  <label for="table-to">Places max</label>
+                  <input type="numer" id='table-to' value="" class="text-blue-700" disabled/>
+              </div>
+              <p>
+                <button id="validateMatching" class="bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-2">
                     Validate
                 </button>
-                
-            </p>           
+              </p>   
+            </div>
         </div>
+      </div>        
     </div>
+  </div>
+  <script src="./../helpers.js"></script>
+  <script src="./script-matching.js"></script>
 </body>
 </html>
